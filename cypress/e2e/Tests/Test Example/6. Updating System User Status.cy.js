@@ -1,10 +1,10 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import SidePanel from "../Pages/SidePanel";
-import {Constants} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants} from "../../../Constants/Constants";
 
-describe('Resetting User Password', () => {
-    it('User Password should be reset ', () => {
+describe('Updating System User status', () => {
+    it('Updating System User status', () => {
         const loginPage = new LoginPage();
         const adminPage = new AdminPage();
         const sidePanel = new SidePanel();
@@ -18,8 +18,9 @@ describe('Resetting User Password', () => {
         adminPage.navigateToUserManagement();
         adminPage.searchUserByUsername(Constants.newUsername);
         adminPage.clickToEditBtn();
-        adminPage.resetPassword(Constants.resetNewPassword);
+        adminPage.editUserStatus(Constants.updatedStatus);
         adminPage.clickToSaveBtn();
         adminPage.assertSuccessMessage();
+        adminPage.verifyThatStatusUpdated(Constants.newUsername, Constants.updatedStatus);
     });
 });

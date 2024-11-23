@@ -1,8 +1,8 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import Header from "../Pages/Header";
-import SidePanel from "../Pages/SidePanel";
-import {Constants} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import Header from "../../Pages/Header";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants} from "../../../Constants/Constants";
 
 describe('Validating User Role Permissions', () => {
     const loginPage = new LoginPage();
@@ -15,7 +15,7 @@ describe('Validating User Role Permissions', () => {
         cy.wait(1000);
     })
 
-    it('Login with Admin and create new user ', () => {
+    it('Validating User Role Permissions', () => {
         loginPage.login(Constants.adminUserName, Constants.adminPassword);
         loginPage.assertSuccessLogin();
 

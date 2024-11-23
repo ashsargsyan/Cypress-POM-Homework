@@ -167,28 +167,9 @@ class AdminPage {
             .should('be.visible');
     }
 
-    verifyErrorMessageNotVisible() {
-        cy.get(AdminPageLocators.userRole)
-            .parent()
-            .siblings(AdminPageLocators.errorMessage)
-            .should('not.exist');
-        cy.get(AdminPageLocators.employeeName)
-            .parent()
-            .siblings(AdminPageLocators.errorMessage)
-            .should('not.exist');
-        cy.get(AdminPageLocators.status)
-            .parent()
-            .siblings(AdminPageLocators.errorMessage)
-            .should('not.exist');
-        cy.get(AdminPageLocators.userName)
-            .parent()
-            .siblings(AdminPageLocators.errorMessage)
-            .should('not.exist');
-        cy.get(AdminPageLocators.password)
-            .parent()
-            .siblings(AdminPageLocators.errorMessage)
-            .should('not.exist');
-        cy.get(AdminPageLocators.confirmPassword)
+    verifyErrorMessageNotVisible(fieldname) {
+        cy.get(AdminPageLocators.findFieldName)
+            .contains(fieldname)
             .parent()
             .siblings(AdminPageLocators.errorMessage)
             .should('not.exist');

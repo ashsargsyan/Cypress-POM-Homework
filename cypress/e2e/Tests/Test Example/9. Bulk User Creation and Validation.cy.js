@@ -1,11 +1,11 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import SidePanel from "../Pages/SidePanel";
-import {Constants , users} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants , users} from "../../../Constants/Constants";
 
 
 describe("Bulk User Creation and Validation", function() {
-    it('Register multiple users and validate the data ', () => {
+    it('Bulk User Creation and Validation', () => {
         const loginPage = new LoginPage();
         const adminPage = new AdminPage();
         const sidePanel = new SidePanel();
