@@ -1,10 +1,10 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import SidePanel from "../Pages/SidePanel";
-import {Constants} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants} from "../../../Constants/Constants";
 
 describe('Searching for Users by Role', () => {
-    it('Should be show filtered role', () => {
+    it('Searching for Users by Role', () => {
         const loginPage = new LoginPage();
         const adminPage = new AdminPage();
         const sidePanel = new SidePanel();

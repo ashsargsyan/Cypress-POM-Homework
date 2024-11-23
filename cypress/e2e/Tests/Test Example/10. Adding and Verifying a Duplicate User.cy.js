@@ -1,11 +1,11 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import SidePanel from "../Pages/SidePanel";
-import {Constants} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants} from "../../../Constants/Constants";
 
 
 describe('Adding and Verifying a Duplicate User', () => {
-    it('should ', () => {
+    it('Adding and Verifying a Duplicate User', () => {
         const loginPage = new LoginPage();
         const adminPage = new AdminPage();
         const sidePanel = new SidePanel();
@@ -18,21 +18,17 @@ describe('Adding and Verifying a Duplicate User', () => {
 
         adminPage.navigateToUserManagement();
         adminPage.clickToAddButton();
-        adminPage.addUser(Constants.newUsername,
-            Constants.newPassword,
-            Constants.role,
-            Constants.employeeName,
-            Constants.status);
+        adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
         adminPage.clickToSaveBtn();
         adminPage.assertSuccessMessage();
         adminPage.verifyThatUserAdded(Constants.newUsername);
         adminPage.clickToAddButton();
-        adminPage.addUser(Constants.newUsername,
-            Constants.newPassword,
-            Constants.role,
-            Constants.employeeName,
-            Constants.status);
+        adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
         adminPage.clickToSaveBtn();
         adminPage.verifyErrorMessageVisible(Constants.usernamefield);
+        adminPage.navigateToUserManagement();
+        adminPage.selectUser(Constants.newUsername);
+        adminPage.deleteUser();
+        adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
     });
 });

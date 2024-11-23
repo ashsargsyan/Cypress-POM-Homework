@@ -1,11 +1,10 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import SidePanel from "../Pages/SidePanel";
-import {Constants} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants} from "../../../Constants/Constants";
 
 describe('Add User Mandatory Fields and Validation Messages', () => {
-    it('in Add a User section Check fill the fields with valid and invalid data' +
-        ' to check error messages', () => {
+    it('Add User Mandatory Fields and Validation Messages', () => {
         const loginPage = new LoginPage();
         const adminPage = new AdminPage();
         const sidePanel = new SidePanel();
@@ -25,14 +24,18 @@ describe('Add User Mandatory Fields and Validation Messages', () => {
         adminPage.verifyErrorMessageVisible(Constants.usernamefield);
         adminPage.verifyErrorMessageVisible(Constants.passwordfield);
         adminPage.verifyErrorMessageVisible(Constants.confirmPasswordfield);
-        adminPage.addUser(Constants.newUsername,
-            Constants.newPassword,
-            Constants.role,
-            Constants.employeeName,
-            Constants.status);
-        adminPage.verifyErrorMessageNotVisible();
+        adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+        adminPage.verifyErrorMessageNotVisible(Constants.userrole);
+        adminPage.verifyErrorMessageNotVisible(Constants.employeename);
+        adminPage.verifyErrorMessageNotVisible(Constants.statusfield);
+        adminPage.verifyErrorMessageNotVisible(Constants.usernamefield);
+        adminPage.verifyErrorMessageNotVisible(Constants.passwordfield);
+        adminPage.verifyErrorMessageNotVisible(Constants.confirmPasswordfield);
         adminPage.clickToSaveBtn();
         adminPage.assertSuccessMessage();
         adminPage.verifyThatUserAdded(Constants.newUsername);
+        adminPage.selectUser(Constants.newUsername);
+        adminPage.deleteUser();
+        adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
     });
 })

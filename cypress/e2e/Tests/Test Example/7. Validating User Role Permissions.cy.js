@@ -1,8 +1,8 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import Header from "../Pages/Header";
-import SidePanel from "../Pages/SidePanel";
-import {Constants} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import Header from "../../Pages/Header";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants} from "../../../Constants/Constants";
 
 describe('Validating User Role Permissions', () => {
     const loginPage = new LoginPage();
@@ -10,12 +10,8 @@ describe('Validating User Role Permissions', () => {
     const header = new Header();
     const sidePanel = new SidePanel();
 
-    beforeEach(() => {
+    it('Validating User Role Permissions', () => {
         loginPage.open();
-        cy.wait(1000);
-    })
-
-    it('Login with Admin and create new user ', () => {
         loginPage.login(Constants.adminUserName, Constants.adminPassword);
         loginPage.assertSuccessLogin();
 
@@ -32,10 +28,8 @@ describe('Validating User Role Permissions', () => {
         adminPage.assertSuccessMessage();
         adminPage.verifyThatUserAdded(Constants.newUsername2);
 
-        header.logOut();
-    });
+        header.logOut()
 
-    it('Login with new user and check role permissions', () => {
         loginPage.login(Constants.newUsername2, Constants.newPassword);
         loginPage.assertSuccessLogin();
 
@@ -43,5 +37,14 @@ describe('Validating User Role Permissions', () => {
         sidePanel.verifyAdminNotVisible();
 
         adminPage.verifyThatUserManagementNotAvailable();
+        header.logOut();
+        loginPage.login(Constants.adminUserName, Constants.adminPassword);
+        loginPage.assertSuccessLogin();
+        sidePanel.openAdminPage();
+        adminPage.navigateToUserManagement();
+        adminPage.searchUserByUsername(Constants.newUsername2);
+        adminPage.selectUser(Constants.newUsername2);
+        adminPage.deleteUser();
+        adminPage.verifyDeletedUserNotVisible(Constants.newUsername2);
     });
 })

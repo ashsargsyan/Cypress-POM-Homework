@@ -1,11 +1,11 @@
-import LoginPage from "../Pages/LoginPage";
-import AdminPage from "../Pages/AdminPage";
-import SidePanel from "../Pages/SidePanel";
-import {Constants , users} from "../../Constants/Constants";
+import LoginPage from "../../Pages/LoginPage";
+import AdminPage from "../../Pages/AdminPage";
+import SidePanel from "../../Pages/SidePanel";
+import {Constants , users} from "../../../Constants/Constants";
 
 
 describe("Bulk User Creation and Validation", function() {
-    it('Register multiple users and validate the data ', () => {
+    it('Bulk User Creation and Validation', () => {
         const loginPage = new LoginPage();
         const adminPage = new AdminPage();
         const sidePanel = new SidePanel();
@@ -28,11 +28,13 @@ describe("Bulk User Creation and Validation", function() {
         cy.wait(2500);
 
         users.forEach((user) => {
-            adminPage.searchUserByUsername(user.username);
             adminPage.verifyThatUserAdded(user.username);
             adminPage.verifyRoleUpdated(user.username, user.role);
             adminPage.verifyEmployeeNameAdded(user.username, user.employeeName);
             adminPage.verifyThatStatusUpdated(user.username, user.status);
+            adminPage.selectUser(user.username);
+            adminPage.deleteUser();
+            adminPage.verifyDeletedUserNotVisible(user.username);
         });
     });
 })
