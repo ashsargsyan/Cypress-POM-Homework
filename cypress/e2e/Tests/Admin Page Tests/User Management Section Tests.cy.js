@@ -131,15 +131,12 @@ describe('User Management section tests', () => {
     adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
   });
 
-  it('Bulk User Creation and Validation', () => {
-    users.forEach((user) => {
+  users.forEach((user) => {
+    it('Bulk User Creation and Validation', () => {
       adminPage.clickToAddButton();
       adminPage.addUser(user.username, user.password, user.role, user.employeeName, user.status);
       adminPage.clickToSaveBtn();
       adminPage.assertSuccessMessage();
-    });
-    cy.wait(2500);
-    users.forEach((user) => {
       adminPage.verifyThatUserAdded(user.username);
       adminPage.verifyRoleUpdated(user.username, user.role);
       adminPage.verifyEmployeeNameAdded(user.username, user.employeeName);
@@ -148,7 +145,7 @@ describe('User Management section tests', () => {
       adminPage.deleteUser();
       adminPage.verifyDeletedUserNotVisible(user.username);
     });
-  });
+  })
 
   it('Adding and Verifying a Duplicate User', () => {
     adminPage.clickToAddButton();
@@ -165,4 +162,8 @@ describe('User Management section tests', () => {
     adminPage.deleteUser();
     adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
   });
+
+  afterEach(() => {
+    header.logOut();
+  })
 })
