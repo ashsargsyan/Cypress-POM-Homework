@@ -1,0 +1,13 @@
+{
+  "role": "ESS",
+  "filteredRole": "Admin",
+  "employeeName": "Orange",
+  "status": "Enabled",
+  "updatedStatus": "Disabled",
+  "userrole": "User Role",
+  "employeename": "Employee Name",
+  "statusfield": "Status",
+  "usernamefield": "Username",
+  "passwordfield": "Password",
+  "confirmPasswordfield": "Confirm Password"
+}

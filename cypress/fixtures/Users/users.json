@@ -1,0 +1,24 @@
+[
+  {
+    "username": "testuser8",
+    "password": "Testuser01",
+    "newPassword": "Testuser88",
+    "role": "ESS",
+    "employeeName": "Orange",
+    "status": "Enabled"
+  },
+  {
+    "username": "testuser4",
+    "password": "Testuser02",
+    "role": "ESS",
+    "employeeName": "Orange",
+    "status": "Enabled"
+  },
+  {
+    "username": "testuser9",
+    "password": "Testuser03",
+    "role": "Admin",
+    "employeeName": "Orange Test",
+    "status": "Enabled"
+  }
+]

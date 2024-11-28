@@ -2,137 +2,138 @@ import LoginPage from "../../Pages/LoginPage";
 import AdminPage from "../../Pages/AdminPage";
 import Header from "../../Pages/Header";
 import SidePanel from "../../Pages/SidePanel";
-import {Constants, users} from "../../../Constants/Constants";
 
 describe('User Management section tests', () => {
-  beforeEach(() => {
-    loginPage.open();
-    loginPage.login(Constants.adminUserName, Constants.adminPassword);
-    loginPage.assertSuccessLogin();
-    sidePanel.openAdminPage();
-    adminPage.navigateToUserManagement();
-  });
-
   const loginPage = new LoginPage();
   const adminPage = new AdminPage();
   const header = new Header();
   const sidePanel = new SidePanel();
 
+  let adminData, usersData, userInfo
+
+  before(() => {
+    cy.fixture('/Users/admin.json').then((admin) => {
+      adminData = admin;
+    });
+    cy.fixture('Users/users.json').then((users) => {
+      usersData = users;
+    });
+    cy.fixture('Admin page/User Management/usersInfo.json').then((usersInfo) => {
+      userInfo = usersInfo;
+    });
+  })
+
+  beforeEach(() => {
+    cy.openSite();
+    loginPage.login(adminData.username, adminData.password);
+    loginPage.assertSuccessLogin();
+    sidePanel.openAdminPage();
+    adminPage.navigateToUserManagement();
+  });
+
   it('Adding a new user in the Admin section', () => {
     adminPage.clickToAddButton();
-    adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+    adminPage.addUser(usersData[0].username, usersData[0].password, usersData[0].role, usersData[0].employeeName, usersData[0].status);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatUserAdded(Constants.newUsername);
-    adminPage.selectUser(Constants.newUsername);
-    adminPage.deleteUser();
-    adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
+    adminPage.verifyThatUserAdded(usersData[0].username);
+    adminPage.combinedDeleting(usersData[0].username);
   })
 
   it('Editing an existing user role', () => {
     adminPage.clickToAddButton();
-    adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+    adminPage.addUser(usersData[0].username, usersData[0].password, usersData[0].role, usersData[0].employeeName, usersData[0].status);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatUserAdded(Constants.newUsername);
-    adminPage.searchUserByUsername(Constants.newUsername);
+    adminPage.verifyThatUserAdded(usersData[0].username);
+    adminPage.searchUserByUsername(usersData[0].username);
     adminPage.clickToEditBtn();
-    adminPage.editExistingUserRole(Constants.filteredRole);
+    adminPage.editExistingUserRole(userInfo.filteredRole);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyRoleUpdated(Constants.newUsername, Constants.filteredRole);
-    adminPage.selectUser(Constants.newUsername);
-    adminPage.deleteUser();
-    adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
+    adminPage.verifyRoleUpdated(usersData[0].username, userInfo.filteredRole);
+    adminPage.combinedDeleting(usersData[0].username);
   });
 
   it('Searching for Users by Role', () => {
-    adminPage.searchUserByRole(Constants.filteredRole);
-    adminPage.verifySelectedRole(Constants.role);
+    adminPage.searchUserByRole(userInfo.filteredRole);
+    adminPage.verifySelectedRole(userInfo.role);
   });
 
   it('Resetting User Password', () => {
     adminPage.clickToAddButton();
-    adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+    adminPage.addUser(usersData[0].username, usersData[0].password, usersData[0].role, usersData[0].employeeName, usersData[0].status);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatUserAdded(Constants.newUsername);
-    adminPage.searchUserByUsername(Constants.newUsername);
+    adminPage.verifyThatUserAdded(usersData[0].username);
+    adminPage.searchUserByUsername(usersData[0].username);
     adminPage.clickToEditBtn();
-    adminPage.resetPassword(Constants.resetNewPassword);
+    adminPage.resetPassword(usersData[0].newPassword);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.selectUser(Constants.newUsername);
-    adminPage.deleteUser();
-    adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
+    adminPage.combinedDeleting(usersData[0].username);
   });
 
   it('Updating System User status', () => {
     adminPage.clickToAddButton();
-    adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+    adminPage.addUser(usersData[0].username, usersData[0].password, usersData[0].role, usersData[0].employeeName, usersData[0].status);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatUserAdded(Constants.newUsername);
-    adminPage.searchUserByUsername(Constants.newUsername);
+    adminPage.verifyThatUserAdded(usersData[0].username);
+    adminPage.searchUserByUsername(usersData[0].username);
     adminPage.clickToEditBtn();
-    adminPage.editUserStatus(Constants.updatedStatus);
+    adminPage.editUserStatus(userInfo.updatedStatus);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatStatusUpdated(Constants.newUsername, Constants.updatedStatus);
-    adminPage.selectUser(Constants.newUsername);
-    adminPage.deleteUser();
-    adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
+    adminPage.verifyThatStatusUpdated(usersData[0].username, userInfo.updatedStatus);
+    adminPage.combinedDeleting(usersData[0].username);
   });
 
   it('Validating User Role Permissions', () => {
     adminPage.clickToAddButton();
-    adminPage.addUser(Constants.newUsername2, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+    adminPage.addUser(usersData[1].username, usersData[1].password, usersData[1].role, usersData[1].employeeName, usersData[1].status);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatUserAdded(Constants.newUsername2);
+    adminPage.verifyThatUserAdded(usersData[1].username);
     header.logOut();
-    loginPage.login(Constants.newUsername2, Constants.newPassword);
+    loginPage.login(usersData[1].username, usersData[1].password);
     loginPage.assertSuccessLogin();
-    sidePanel.searchInSidePanel(Constants.filteredRole);
+    sidePanel.searchInSidePanel(userInfo.filteredRole);
     sidePanel.verifyAdminNotVisible();
     adminPage.verifyThatUserManagementNotAvailable();
     header.logOut();
-    loginPage.login(Constants.adminUserName, Constants.adminPassword);
+    loginPage.login(adminData.username, adminData.password);
     loginPage.assertSuccessLogin();
     sidePanel.openAdminPage();
     adminPage.navigateToUserManagement();
-    adminPage.searchUserByUsername(Constants.newUsername2);
-    adminPage.selectUser(Constants.newUsername2);
-    adminPage.deleteUser();
-    adminPage.verifyDeletedUserNotVisible(Constants.newUsername2);
+    adminPage.searchUserByUsername(usersData[1].username);
+    adminPage.combinedDeleting(usersData[1].username);
   });
 
   it('Add User Mandatory Fields and Validation Messages', () => {
     adminPage.clickToAddButton();
     adminPage.clickToSaveBtn();
-    adminPage.verifyErrorMessageVisible(Constants.userrole);
-    adminPage.verifyErrorMessageVisible(Constants.employeename);
-    adminPage.verifyErrorMessageVisible(Constants.statusfield);
-    adminPage.verifyErrorMessageVisible(Constants.usernamefield);
-    adminPage.verifyErrorMessageVisible(Constants.passwordfield);
-    adminPage.verifyErrorMessageVisible(Constants.confirmPasswordfield);
-    adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
-    adminPage.verifyErrorMessageNotVisible(Constants.userrole);
-    adminPage.verifyErrorMessageNotVisible(Constants.employeename);
-    adminPage.verifyErrorMessageNotVisible(Constants.statusfield);
-    adminPage.verifyErrorMessageNotVisible(Constants.usernamefield);
-    adminPage.verifyErrorMessageNotVisible(Constants.passwordfield);
-    adminPage.verifyErrorMessageNotVisible(Constants.confirmPasswordfield);
+    adminPage.verifyErrorMessageVisible(userInfo.userrole);
+    adminPage.verifyErrorMessageVisible(userInfo.employeename);
+    adminPage.verifyErrorMessageVisible(userInfo.statusfield);
+    adminPage.verifyErrorMessageVisible(userInfo.usernamefield);
+    adminPage.verifyErrorMessageVisible(userInfo.passwordfield);
+    adminPage.verifyErrorMessageVisible(userInfo.confirmPasswordfield);
+    adminPage.addUser(usersData[0].username, usersData[0].password, usersData[0].role, usersData[0].employeeName, usersData[0].status);
+    adminPage.verifyErrorMessageNotVisible(userInfo.userrole);
+    adminPage.verifyErrorMessageNotVisible(userInfo.employeename);
+    adminPage.verifyErrorMessageNotVisible(userInfo.statusfield);
+    adminPage.verifyErrorMessageNotVisible(userInfo.usernamefield);
+    adminPage.verifyErrorMessageNotVisible(userInfo.passwordfield);
+    adminPage.verifyErrorMessageNotVisible(userInfo.confirmPasswordfield);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatUserAdded(Constants.newUsername);
-    adminPage.selectUser(Constants.newUsername);
-    adminPage.deleteUser();
-    adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
+    adminPage.verifyThatUserAdded(usersData[0].username);
+    adminPage.combinedDeleting(usersData[0].username);
   });
 
-  users.forEach((user) => {
-    it('Bulk User Creation and Validation', () => {
+  it('Bulk User Creation and Validation', () => {
+    usersData.forEach((user) => {
       adminPage.clickToAddButton();
       adminPage.addUser(user.username, user.password, user.role, user.employeeName, user.status);
       adminPage.clickToSaveBtn();
@@ -141,26 +142,22 @@ describe('User Management section tests', () => {
       adminPage.verifyRoleUpdated(user.username, user.role);
       adminPage.verifyEmployeeNameAdded(user.username, user.employeeName);
       adminPage.verifyThatStatusUpdated(user.username, user.status);
-      adminPage.selectUser(user.username);
-      adminPage.deleteUser();
-      adminPage.verifyDeletedUserNotVisible(user.username);
+      adminPage.combinedDeleting(user.username);
     });
   })
 
   it('Adding and Verifying a Duplicate User', () => {
     adminPage.clickToAddButton();
-    adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+    adminPage.addUser(usersData[1].username, usersData[1].password, usersData[1].role, usersData[1].employeeName, usersData[1].status);
     adminPage.clickToSaveBtn();
     adminPage.assertSuccessMessage();
-    adminPage.verifyThatUserAdded(Constants.newUsername);
+    adminPage.verifyThatUserAdded(usersData[1].username);
     adminPage.clickToAddButton();
-    adminPage.addUser(Constants.newUsername, Constants.newPassword, Constants.role, Constants.employeeName, Constants.status);
+    adminPage.addUser(usersData[1].username, usersData[1].password, usersData[1].role, usersData[1].employeeName, usersData[1].status);
     adminPage.clickToSaveBtn();
-    adminPage.verifyErrorMessageVisible(Constants.usernamefield);
+    adminPage.verifyErrorMessageVisible(userInfo.usernamefield);
     adminPage.navigateToUserManagement();
-    adminPage.selectUser(Constants.newUsername);
-    adminPage.deleteUser();
-    adminPage.verifyDeletedUserNotVisible(Constants.newUsername);
+    adminPage.combinedDeleting(usersData[1].username);
   });
 
   afterEach(() => {

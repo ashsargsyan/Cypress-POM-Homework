@@ -1,12 +1,7 @@
 import {loginLocators} from "../../Locators/LoginLocators";
 import {HeaderLocators} from "../../Locators/HeaderLocators";
-import {Constants} from "../../Constants/Constants";
 
 class LoginPage {
-
-    open() {
-        cy.visit(Constants.url);
-    }
 
     login(username, password) {
         cy.get(loginLocators.username).type(username);

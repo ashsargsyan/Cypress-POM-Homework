@@ -22,4 +22,7 @@
 //
 //
 // -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url,
+// Cypress.Commands.overwrite
+Cypress.Commands.add('openSite',() => {
+    cy.visit('https://opensource-demo.orangehrmlive.com/');
+})

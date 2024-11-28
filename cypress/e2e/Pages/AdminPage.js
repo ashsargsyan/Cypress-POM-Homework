@@ -106,6 +106,12 @@ class AdminPage {
         cy.get(AdminPageLocators.successMessage).should('be.visible');
     }
 
+    combinedDeleting(username) {
+        this.selectUser(username);
+        this.deleteUser();
+        this.verifyDeletedUserNotVisible(username);
+    }
+
     verifyDeletedUserNotVisible(username) {
         cy.get(AdminPageLocators.usersTableBody)
             .contains(username)
